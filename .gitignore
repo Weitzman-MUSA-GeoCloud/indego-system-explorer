@@ -1,0 +1,17 @@
+# Node/npm/vite generated files
+node_modules/
+.vite/
+
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Downloaded or processed data
+data/

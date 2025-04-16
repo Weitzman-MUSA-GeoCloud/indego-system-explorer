@@ -1,0 +1,25 @@
+{
+  "name": "ui",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^6.2.0"
+  },
+  "dependencies": {
+    "@deck.gl/core": "^9.1.8",
+    "@deck.gl/layers": "^9.1.8",
+    "@deck.gl/mapbox": "^9.1.8",
+    "@turf/turf": "^7.2.0",
+    "apexcharts": "^4.5.0",
+    "d3": "^7.9.0",
+    "lodash": "^4.17.21",
+    "maplibre-gl": "^5.3.0",
+    "s2js": "^1.43.6"
+  }
+}
