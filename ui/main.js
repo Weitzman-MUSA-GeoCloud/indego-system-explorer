@@ -230,10 +230,33 @@ function calculateOpacity(totalPopularity, features) {
 // Update the legend based on the range of popularities; show the magma color
 // ramp and how the colors correspond to the popularity values.
 function updateLegend(features) {
-  const minPopularity = Math.min(...features.map(r => r.properties.totalPopularity));
-  const maxPopularity = Math.max(...features.map(r => r.properties.totalPopularity));
-  const colorScale = d3.scaleSequential(d3.interpolateMagma).domain([minPopularity, maxPopularity]);
+  // const minPopularity = Math.min(...features.map(r => r.properties.totalPopularity));
+  // const maxPopularity = Math.max(...features.map(r => r.properties.totalPopularity));
+  const colorScale = d3.scaleSequential(d3.interpolateMagma).domain([0, 100]);
+  const opacityScale = d3.scaleSequential(d3.interpolateRgb("silver", colorScale(50))).domain([0, 100]);
   legend.innerHTML = ''; // Clear previous legend
+
+  legend.innerHTML = `
+    <ol class="legend-scale-labels">
+      <li>More Pick-ups</li>
+      <li>More Drop-offs</li>
+    </ol>
+    <div class="gravity-scale"></div>
+
+    <ol class="legend-scale-labels">
+      <li>Less Popular</li>
+      <li>More Popular</li>
+    </ol>
+    <div class="popularity-scale"></div>
+  `
+
+  const gravityScale = legend.querySelector('.gravity-scale');
+  const popularityScale = legend.querySelector('.popularity-scale');
+
+  for (let i = 0; i < 100; ++i) {
+    gravityScale.innerHTML += `<span class="band" style="background-color:${colorScale(i)}"></span>`;
+    popularityScale.innerHTML += `<span class="band" style="background-color:${opacityScale(i)}"></span>`;
+  }
 }
 
 // Update charts

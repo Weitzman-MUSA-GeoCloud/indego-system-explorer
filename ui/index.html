@@ -7,25 +7,34 @@
   <link href="./style.css" rel="stylesheet" />
 </head>
 <body>
-  <div id="map-wrapper">
-    <div id="map-controls">
-      <label for="start-hour">Start Hour:</label>
-      <input type="number" id="start-hour" min="0" max="22" value="0" step="1" />
-      <label for="end-hour">End Hour:</label>
-      <input type="number" id="end-hour" min="1" max="23" value="23" step="1" />
-      <label for="is-aggregated">Aggregated:</label>
-      <input type="checkbox" id="is-aggregated" checked />
-    </div>
-    <div id="map-legend"></div>
-    <div id="map"></div>
-  </div>
-  <div id="charts">
-    Origin Popularity
-    <div class="chart" id="origin-chart"></div>
+  <main>
+    <section id="map-wrapper">
+      <div id="map-controls">
+        <label for="start-hour">Start Hour:</label>
+        <input type="number" id="start-hour" min="0" max="22" value="0" step="1" />
+        <label for="end-hour">End Hour:</label>
+        <input type="number" id="end-hour" min="1" max="23" value="23" step="1" />
+        <label for="is-aggregated">Aggregated:</label>
+        <input type="checkbox" id="is-aggregated" checked />
+      </div>
+      <div id="map-legend"></div>
+      <div id="map"></div>
+    </section>
 
-    Desination Popularity
-    <div class="chart" id="destination-chart"></div>
-  </div>
+    <section id="charts">
+      <div class="chart-wrapper">
+        <header>Origin Popularity</header>
+        <p>The origin popularity is defined as the average daily number of bike pick-ups from a station between the given hours.</p>
+        <div class="chart" id="origin-chart"></div>
+      </div>
+
+      <div class="chart-wrapper">
+        <header>Desination Popularity</header>
+        <p>The destination popularity is defined as the average daily number of bike drop-offs to a station between the given hours.</p>
+        <div class="chart" id="destination-chart"></div>
+      </div>
+    </section>
+  </main>
   <script type="module" src="./main.js"></script>
 </body>
 </html>

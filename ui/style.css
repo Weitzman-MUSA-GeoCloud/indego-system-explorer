@@ -1,7 +1,12 @@
+html {
+  font-family: sans-serif;
+}
 body {
+  margin: 0;
+}
+main {
   display: flex;
   height: 100vh;
-  margin: 0;
 }
 #map-wrapper {
   flex: 2;
@@ -36,10 +41,39 @@ body {
   padding: 10px;
   overflow-y: auto;
 }
+.chart-wrapper header {
+  font-weight: bold;
+}
 .chart {
   flex: 1;
   margin-bottom: 10px;
 }
 .maplibregl-popup {
   z-index: 1000;
+}
+
+.legend-scale-labels {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.legend-scale-labels li {
+  margin: 0;
+  padding: 0;
+  font-size: 0.7rem;
+}
+.gravity-scale, .popularity-scale {
+  width: 200px;
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+
+.band {
+  display: block;
+  height: 1rem;
+  flex-grow: 1;
 }
