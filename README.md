@@ -22,6 +22,8 @@ gcloud storage cp --recursive --no-clobber data/year* gs://indego-bikeshare-tool
 
 ## Deploying the API
 
+The API runs as a Google Cloud Function, and can be deployed with a command like the following:
+
 ```bash
 gcloud run deploy get-popularity \
     --project indego-bikeshare-tools \
