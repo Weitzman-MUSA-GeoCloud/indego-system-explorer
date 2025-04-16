@@ -1,5 +1,5 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+# Simple workflow for building site with vite and deploying to GitHub Pages
+name: Deploy vite-built site to Pages
 
 on:
   # Runs on pushes targeting the default branch
@@ -33,11 +33,22 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - name: Go to the UI directory
+        run: cd ui
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload the ui folder
-          path: 'ui'
+          path: dist
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

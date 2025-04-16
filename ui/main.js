@@ -41,7 +41,7 @@ async function fetchStationData() {
   // Expect this function to fetch data from a server or API.
   // The data should be an array of {P_o, P_d, P, station_id, geometry} objects.
   // We should then transform that into an array of GeoJSON features later.
-  const url = `http://localhost:8080/?start_hour=${startHour}&end_hour=${endHour}`;
+  const url = `https://get-popularity-536078031908.us-east4.run.app?start_hour=${startHour}&end_hour=${endHour}`;
   const resp = await fetch(url);
   const data = await resp.json();
 
