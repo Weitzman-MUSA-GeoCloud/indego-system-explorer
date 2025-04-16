@@ -7,9 +7,9 @@ import * as deckMapbox from '@deck.gl/mapbox';
 import * as turf from "@turf/turf";
 import * as _ from 'lodash';
 
-// Initialize the map
-const mbtoken = 'pk.eyJ1IjoibWp1bWJlLXRlc3QiLCJhIjoiY205ZzMwbjJuMXdsNTJyb2V6ajI4d3N3bCJ9.myK8xLEUb0t1iuaSAEP48w';
-const mbstyle = 'mapbox/streets-v12';
+// Initialize the map -- the base map tiles are loaded from Stadia maps, using
+// the GitHub pages domain to authorize access. See the Stadia documantation at
+// https://docs.stadiamaps.com/authentication/#domain-based-authentication
 const bikesmap = new maplibregl.Map({
   container: 'map',
   style: 'https://tiles.stadiamaps.com/styles/alidade_smooth.json',
@@ -17,13 +17,11 @@ const bikesmap = new maplibregl.Map({
   zoom: 11,
 });
 
+// Set up a tooltip object for the map.
 const tooltip = new maplibregl.Popup({
   closeButton: false,
   closeOnClick: false,
 });
-
-let layer = null;
-let deckOverlay = null;
 
 // Add a geojson outline of the city of Philadelphia
 const outlineGeoJSONURL = 'https://opendata.arcgis.com/datasets/405ec3da942d4e20869d4e1449a2be48_0.geojson';
@@ -31,7 +29,9 @@ const outlineResp = await fetch(outlineGeoJSONURL);
 const outlineData = await outlineResp.json();
 
 // Placeholder data & state
-let stations = []; // Replace with actual station data
+let dataLayer = null;
+let deckOverlay = null;
+let stations = [];
 let filters = {};
 let startHour = 0;
 let endHour = 23;
@@ -62,10 +62,13 @@ function getDashboardFeatures() {
       geometry: JSON.parse(row.geometry),
     }));
 
+  // Return the stations directly if we're not aggregating into hex cells.
   if (!aggregate) {
     return stationFeatures;
   }
 
+  // If we are aggregating, use turf.js to create a hex grid within the bounds
+  // of the convex hull around all the stations.
   const stationsHull = turf.convex({type: 'FeatureCollection', features: stationFeatures});
 
   // Aggregate into a hexGrid using turf
@@ -101,7 +104,7 @@ function getDashboardFeatures() {
   }
   return hexGridFeatures;
 
-  // For now, we will use placeholder data.
+  // The data returned from this function will be structured like this:
   // return [
   //   {
   //     "type": "Feature",
@@ -158,7 +161,7 @@ function updateMap(features) {
   ));
 
   // Add feature markers
-  layer = new deckLayers.GeoJsonLayer({
+  dataLayer = new deckLayers.GeoJsonLayer({
     id: 'geojson-layer',
     data: {
       type: 'FeatureCollection',
@@ -196,7 +199,7 @@ function updateMap(features) {
 
   // Add the layer to the map
   deckOverlay = new deckMapbox.MapboxOverlay({
-    layers: [layer],
+    layers: [dataLayer],
   })
 
   bikesmap.addControl(deckOverlay);
@@ -204,9 +207,9 @@ function updateMap(features) {
 
 // Clear all map layers
 function clearMapLayers() {
-  if (layer) {
+  if (dataLayer) {
     bikesmap.removeControl(deckOverlay);
-    layer = null;
+    dataLayer = null;
     deckOverlay = null;
   }
 }
