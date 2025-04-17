@@ -323,7 +323,7 @@ function renderChart(containerId, features, title, property) {
     },
     yaxis: {
       title: {
-        text: 'Count',
+        text: `Number of ${aggregate ? 'Cells' : 'Stations'}`,
       },
     },
     plotOptions: {
@@ -349,7 +349,7 @@ function renderChart(containerId, features, title, property) {
       },
       y: {
         title: {
-          formatter: (seriesName) => 'Number of Features'
+          formatter: (seriesName) => `Number of ${aggregate ? 'Cells' : 'Stations'}`
         },
       }
     },
@@ -377,11 +377,17 @@ async function updateAll() {
 
   isUpdating = true;
   console.log('Updating map and charts...');
+
+  loader.classList.remove('hidden');
+
   await fetchStationData();
   const features = getDashboardFeatures();
   updateMap(features);
   updateLegend(features);
   updateCharts(features);
+
+  loader.classList.add('hidden');
+
   isUpdating = false;
 }
 
@@ -401,7 +407,7 @@ startHourRange.addEventListener('input', _.debounce(async () => {
   }
 
   await updateAll();
-}, 300));
+}, 500));
 
 endHourRange.addEventListener('input', _.debounce(async () => {
   endHour = parseInt(endHourRange.value);
@@ -412,7 +418,7 @@ endHourRange.addEventListener('input', _.debounce(async () => {
   }
 
   await updateAll();
-}, 300));
+}, 500));
 
 // Add a checkbox for aggregate
 const isAggregatedCheckbox = document.getElementById('is-aggregated');
@@ -426,6 +432,9 @@ isAggregatedCheckbox.addEventListener('change', async () => {
 
 // The map legend, showing the color ramp and how it corresponds to the popularity values.
 const legend = document.getElementById('map-legend');
+
+// The spinner, for when data is loading for the map and such
+const loader = document.querySelector('.loader-overlay');
 
 // Initial render
 bikesmap.on('load', async () => {

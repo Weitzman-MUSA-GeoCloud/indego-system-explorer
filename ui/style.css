@@ -77,3 +77,24 @@ main {
   height: 1rem;
   flex-grow: 1;
 }
+
+.loader-overlay {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgb(128 128 128 / 85%);
+  z-index: 10000;
+  font-weight: bold;
+  color: white;
+}
+
+.hidden {
+  display: none;
+}
+
