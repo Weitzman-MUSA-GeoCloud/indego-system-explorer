@@ -399,6 +399,14 @@ startHourRange.value = startHour;
 endHourRange.value = endHour;
 
 startHourRange.addEventListener('input', _.debounce(async () => {
+  if (!startHourRange.checkValidity()) {
+    return startHourRange.reportValidity();
+  }
+
+  if (!endHourRange.checkValidity()) {
+    return endHourRange.reportValidity();
+  }
+
   startHour = parseInt(startHourRange.value);
 
   if (startHour >= endHour) {
@@ -407,9 +415,17 @@ startHourRange.addEventListener('input', _.debounce(async () => {
   }
 
   await updateAll();
-}, 500));
+}, 1000));
 
 endHourRange.addEventListener('input', _.debounce(async () => {
+  if (!startHourRange.checkValidity()) {
+    return startHourRange.reportValidity();
+  }
+
+  if (!endHourRange.checkValidity()) {
+    return endHourRange.reportValidity();
+  }
+
   endHour = parseInt(endHourRange.value);
 
   if (endHour <= startHour) {
@@ -418,7 +434,7 @@ endHourRange.addEventListener('input', _.debounce(async () => {
   }
 
   await updateAll();
-}, 500));
+}, 1000));
 
 // Add a checkbox for aggregate
 const isAggregatedCheckbox = document.getElementById('is-aggregated');
